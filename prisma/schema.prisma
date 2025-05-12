@@ -16,7 +16,6 @@ datasource db {
 
 model User {
   id String @id @default(uuid())
-  name String
   firstName String
   lastName String
   accountId String @unique
@@ -25,7 +24,9 @@ model User {
 
 model Account {
   id String @id @default(uuid())
-  email String @unique 
+  email String @unique
   password String
+  userId String @unique
   user User?
 }
+
