@@ -1,5 +1,12 @@
 import { password } from "bun";
-import { findAccountByEmail, findUserById } from "../repositories/auth.repo";
+import {
+  findAccountByEmail,
+  findUserByAccountId,
+} from "../repositories/auth.repo";
+
+const generateAccessToken = () => {};
+
+const generateRefreshToken = () => {};
 
 const loginService = async (email: string, pass: string) => {
   const account = await findAccountByEmail(email);
@@ -13,6 +20,6 @@ const loginService = async (email: string, pass: string) => {
     throw new Error("Invalid credentials");
   }
 
-  const user = await findUserById(account.userId);
+  const user = await findUserByAccountId(account.id);
   return user;
 };

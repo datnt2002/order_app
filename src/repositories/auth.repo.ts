@@ -10,6 +10,14 @@ const findAccountByEmail = async (email: string) => {
   return account;
 };
 
+const findUserByAccountId = async (accountId: string) => {
+  const user = await prisma.user.findUnique({
+    where: { accountId },
+  });
+
+  return user;
+};
+
 const findUserById = async (id: string) => {
   const user = await prisma.user.findUnique({
     where: { id },
@@ -18,4 +26,4 @@ const findUserById = async (id: string) => {
   return user;
 };
 
-export { findUserById, findAccountByEmail };
+export { findUserById, findAccountByEmail, findUserByAccountId };
