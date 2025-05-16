@@ -1,12 +1,42 @@
 import { password } from "bun";
+import { sign } from "hono/jwt";
+import { JWTPayload } from "hono/utils/jwt/types";
+import { TokenType } from "../interfaces/jwt.interface";
 import {
   findAccountByEmail,
   findUserByAccountId,
 } from "../repositories/auth.repo";
 
-const generateAccessToken = () => {};
+const generateAccessToken = async (payload: JWTPayload): Promise<string> => {
+  const token = await sign(
+    { ...payload, type: TokenType.ACCESS },
+    process.env.JWT_SECRET as string
+  );
 
-const generateRefreshToken = () => {};
+  return token;
+};
+
+const generateRefreshToken = async (payload: JWTPayload): Promise<string> => {
+  const token = await sign(
+    { ...payload, type: TokenType.REFRESH },
+    process.env.JWT_SECRET as string
+  );
+
+  return token;
+};
+
+const generateToken = async (userId: string) => {
+  const payload: JWTPayload = {
+    userId,
+    sub: userId,
+  };
+  const accessToken = await generateAccessToken(payload);
+  const refreshToken = await generateRefreshToken(payload);
+  return {
+    accessToken,
+    refreshToken,
+  };
+};
 
 const loginService = async (email: string, pass: string) => {
   const account = await findAccountByEmail(email);
@@ -21,5 +51,12 @@ const loginService = async (email: string, pass: string) => {
   }
 
   const user = await findUserByAccountId(account.id);
-  return user;
+  if (!user) {
+    throw new Error("Invalid credentials");
+  }
+
+  const tokens = await generateToken(user.id);
+  return { user, tokens };
 };
+
+export { loginService };

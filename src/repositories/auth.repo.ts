@@ -7,6 +7,10 @@ const findAccountByEmail = async (email: string) => {
     where: { email },
   });
 
+  if (!account) {
+    throw new Error("Account not found");
+  }
+
   return account;
 };
 
@@ -26,4 +30,4 @@ const findUserById = async (id: string) => {
   return user;
 };
 
-export { findUserById, findAccountByEmail, findUserByAccountId };
+export { findAccountByEmail, findUserByAccountId, findUserById };

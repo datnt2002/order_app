@@ -12,3 +12,30 @@ export const AuthSchema = z
     }),
   })
   .openapi("Auth");
+
+export const LoginResponseSchema = z.object({
+  tokens: z.object({
+    accessToken: z.string().openapi({
+      description: "Access token for the user",
+      example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    }),
+    refreshToken: z.string().openapi({
+      description: "Refresh token for the user",
+      example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    }),
+  }),
+  user: z.object({
+    id: z.string().openapi({
+      description: "ID of the user",
+      example: "1234567890",
+    }),
+    firstName: z.string().openapi({
+      description: "Name of the user",
+      example: "John Doe",
+    }),
+    lastName: z.string().openapi({
+      description: "Name of the user",
+      example: "John Doe",
+    }),
+  }),
+});
