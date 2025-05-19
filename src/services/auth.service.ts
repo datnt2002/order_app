@@ -6,11 +6,12 @@ import {
   findAccountByEmail,
   findUserByAccountId,
 } from "../repositories/auth.repo";
+import configs from "../configs";
 
 const generateAccessToken = async (payload: JWTPayload): Promise<string> => {
   const token = await sign(
     { ...payload, type: TokenType.ACCESS },
-    process.env.JWT_SECRET as string
+    configs.jwt.secret
   );
 
   return token;
@@ -19,7 +20,7 @@ const generateAccessToken = async (payload: JWTPayload): Promise<string> => {
 const generateRefreshToken = async (payload: JWTPayload): Promise<string> => {
   const token = await sign(
     { ...payload, type: TokenType.REFRESH },
-    process.env.JWT_SECRET as string
+    configs.jwt.secret
   );
 
   return token;

@@ -1,4 +1,4 @@
-export const envConfig = {
+export default {
   env: process.env.NODE_ENV,
   port: process.env.PORT,
   redis: {
@@ -15,16 +15,11 @@ export const envConfig = {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     dbname: process.env.DB_NAME,
+    local: process.env.DATABASE_URL,
   },
   jwt: {
-    secret: process.env.JWT_SECRET,
-    expiresIn: process.env.JWT_EXPIRES_IN,
-    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
+    secret: process.env.JWT_SECRET!,
+    expiresIn: process.env.JWT_EXPIRES_IN!,
+    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN!,
   },
 };
-
-const mongoConnection = {
-  local: process.env.DATABASE_URL,
-};
-
-export default { ...envConfig, mongoConnection };
