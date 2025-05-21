@@ -1,9 +1,7 @@
 {
   "name": "order-app",
   "scripts": {
-    "dev": "bun run --hot src/index.ts"
-  },
-  "prisma": {
+    "dev": "bun run --hot src/index.ts",
     "seed": "bun run prisma/seed.ts"
   },
   "dependencies": {

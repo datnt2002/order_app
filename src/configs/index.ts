@@ -1,9 +1,41 @@
-export default {
+interface IConfig {
+  env: string;
+  port: string;
+  redis: {
+    url: string;
+  };
+  cors: {
+    local: string;
+    development: string;
+    production: string;
+    staging: string;
+  };
+  db: {
+    username: string;
+    password: string;
+    dbname: string;
+    local: string;
+  };
+  jwt: {
+    secret: string;
+    expiresIn: number;
+    refreshExpiresIn: number;
+  };
+}
+
+// const parseEnv = (initialValues: Record<string, unknown>) => {
+//   const parsedValues: IConfig;
+//   Object.keys(initialValues).forEach((key) => {
+//     const value = initialValues[key];
+//   });
+//   return parsedValues;
+// };
+
+export default (): IConfig => ({
   env: process.env.NODE_ENV,
   port: process.env.PORT,
   redis: {
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT,
+    url: process.env.REDIS_URL,
   },
   cors: {
     local: "http://localhost:3000",
@@ -18,8 +50,8 @@ export default {
     local: process.env.DATABASE_URL,
   },
   jwt: {
-    secret: process.env.JWT_SECRET!,
-    expiresIn: process.env.JWT_EXPIRES_IN!,
-    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN!,
+    secret: process.env.JWT_SECRET,
+    expiresIn: process.env.JWT_EXPIRES_IN,
+    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
   },
-};
+});

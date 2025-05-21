@@ -1,12 +1,13 @@
 import { password } from "bun";
 import { sign } from "hono/jwt";
 import { JWTPayload } from "hono/utils/jwt/types";
+import configs from "../configs";
 import { TokenType } from "../interfaces/jwt.interface";
+import { getRedisClient } from "../libs/redisInit";
 import {
   findAccountByEmail,
   findUserByAccountId,
 } from "../repositories/auth.repo";
-import configs from "../configs";
 
 const generateAccessToken = async (payload: JWTPayload): Promise<string> => {
   const token = await sign(
@@ -57,6 +58,13 @@ const loginService = async (email: string, pass: string) => {
   }
 
   const tokens = await generateToken(user.id);
+
+  await getRedisClient().set(
+    `${TokenType.REFRESH}${user.id}`,
+    tokens.refreshToken,
+    { expiration: { type: "EX", value: Number(configs.jwt.refreshExpiresIn) } }
+  );
+
   return { user, tokens };
 };
 

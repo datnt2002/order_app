@@ -1,9 +1,32 @@
-import { createClient } from "redis";
+import { createClient, RedisClientType } from "redis";
+import configs from "../configs";
 
-export default async function () {
-  const client = createClient();
+let redisClient: RedisClientType | null = null;
 
-  client.on("error", (err) => console.log("Redis Client Error", err));
+export async function initializeRedis() {
+  if (redisClient && redisClient.isOpen) {
+    return;
+  }
 
-  await client.connect();
+  redisClient = createClient({
+    url: configs.redis.url,
+  });
+
+  redisClient.on("error", (err) => console.log("Redis redisClient Error", err));
+
+  await redisClient.connect();
+}
+
+export function getRedisClient() {
+  if (!redisClient) {
+    throw new Error("Redis client is not initialized");
+  }
+  return redisClient;
+};
+
+export async function closeRedis() {
+  if (redisClient) {
+    await redisClient.quit();
+    redisClient = null;
+  }
 }

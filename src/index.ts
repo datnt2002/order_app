@@ -1,5 +1,5 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
-import redisInit from "./libs/redisInit";
+import { initializeRedis } from "./libs/redisInit";
 import { loginRoute } from "./routers";
 import { loginService } from "./services/auth.service";
 
@@ -22,7 +22,7 @@ async function bootstrap() {
   });
 }
 
-Promise.all([redisInit()])
+Promise.all([initializeRedis()])
   .then(() => bootstrap())
   .catch((err) => {
     console.error("Error initializing application:", err);
